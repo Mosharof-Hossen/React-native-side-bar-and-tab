@@ -1,5 +1,11 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import type { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs";
 import { Tabs } from "expo-router";
+
+const hiddenScreenOptions: BottomTabNavigationOptions = {
+  tabBarButton: () => null,
+  tabBarItemStyle: { display: "none" },
+};
 
 const Layout = () => {
   return (
@@ -7,8 +13,7 @@ const Layout = () => {
       screenOptions={{
         headerShown: false,
         tabBarItemStyle: {
-          width: "100%",
-          height: "100%",
+          flex: 1,
           justifyContent: "center",
           alignItems: "center",
         },
@@ -46,6 +51,20 @@ const Layout = () => {
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="person" color={color} size={size} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="about"
+        options={{
+          title: "About",
+          ...hiddenScreenOptions,
+        }}
+      />
+      <Tabs.Screen
+        name="contact"
+        options={{
+          title: "Contact",
+          ...hiddenScreenOptions,
         }}
       />
     </Tabs>

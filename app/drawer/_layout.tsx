@@ -1,13 +1,73 @@
+import {
+    DrawerContentScrollView,
+    DrawerItem,
+    type DrawerContentComponentProps,
+} from "@react-navigation/drawer";
+import { useRouter, useSegments, type Href } from "expo-router";
 import { Drawer } from "expo-router/drawer";
+import { Alert } from "react-native";
+
+const APP_TITLE = "Leadership Development";
+
+type DrawerRoute = {
+  key: string;
+  label: string;
+  href: Href;
+};
+
+const drawerRoutes = [
+  { key: "home", label: "Home", href: "/drawer/(tabs)/home" as const },
+  { key: "settings", label: "Settings", href: "/drawer/(tabs)/settings" as const },
+  { key: "profile", label: "Profile", href: "/drawer/(tabs)/profile" as const },
+  { key: "about", label: "About", href: "/drawer/(tabs)/about" as const },
+  { key: "contact", label: "Contact", href: "/drawer/(tabs)/contact" as const },
+] satisfies DrawerRoute[];
+
+function CustomDrawerContent(props: DrawerContentComponentProps) {
+  const router = useRouter();
+  const segments = useSegments();
+  const activeKey = segments[2] ?? "home";
+
+  return (
+    <DrawerContentScrollView {...props}>
+      {drawerRoutes.map((route) => (
+        <DrawerItem
+          key={route.key}
+          label={route.label}
+          focused={activeKey === route.key}
+          onPress={() => {
+            router.replace(route.href);
+            props.navigation.closeDrawer();
+          }}
+        />
+      ))}
+      <DrawerItem
+        label="Logout"
+        onPress={() => {
+          props.navigation.closeDrawer();
+          Alert.alert("Logout", "Implement logout functionality here.");
+        }}
+      />
+    </DrawerContentScrollView>
+  );
+}
 
 export default function DrawerLayout() {
   return (
-    <Drawer>
+    <Drawer
+      screenOptions={{
+        headerTitle: APP_TITLE,
+        drawerType: "front",
+      }}
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
       <Drawer.Screen
         name="(tabs)"
-        options={{ title: "Homee", drawerLabel: "Home" }}
+        options={{
+          drawerLabel: "Home",
+          headerShown: true,
+        }}
       />
-      <Drawer.Screen name="about" options={{ title: "About" }} />
     </Drawer>
   );
 }

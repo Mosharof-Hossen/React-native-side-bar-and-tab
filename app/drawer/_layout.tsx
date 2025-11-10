@@ -3,9 +3,10 @@ import {
     DrawerItem,
     type DrawerContentComponentProps,
 } from "@react-navigation/drawer";
-import { useRouter, useSegments, type Href } from "expo-router";
+import { Redirect, useRouter, useSegments, type Href } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import { Alert } from "react-native";
+import { useAuth } from "../../contexts/auth";
 
 const APP_TITLE = "Leadership Development";
 
@@ -27,6 +28,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
   const router = useRouter();
   const segments = useSegments();
   const activeKey = segments[2] ?? "home";
+  const { signOut } = useAuth();
 
   return (
     <DrawerContentScrollView {...props}>
@@ -45,7 +47,9 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
         label="Logout"
         onPress={() => {
           props.navigation.closeDrawer();
-          Alert.alert("Logout", "Implement logout functionality here.");
+          signOut();
+          Alert.alert("Logout", "You have been signed out.");
+          router.replace("/");
         }}
       />
     </DrawerContentScrollView>
@@ -53,6 +57,12 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
 }
 
 export default function DrawerLayout() {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Redirect href="/" />;
+  }
+
   return (
     <Drawer
       screenOptions={{

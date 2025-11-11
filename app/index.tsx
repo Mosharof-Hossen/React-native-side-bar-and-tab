@@ -1,12 +1,11 @@
+import { icons } from "@/constants/icons";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useAuth } from "../contexts/auth";
 
-const HERO_IMAGE =
-  "https://raw.githubusercontent.com/expo/expo/main/docs/public/static/images/tutorial/app-icon.png";
-
+ 
 export default function Index() {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
@@ -23,86 +22,35 @@ export default function Index() {
   }
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 items-center justify-center bg-[#F8FAFC] px-6">
       <StatusBar style="dark" />
-      <View style={styles.header}>
-        <Image source={{ uri: HERO_IMAGE }} style={styles.logo} />
+      <View className="mb-6">
+        <Image
+          source={icons.logo}
+          className="h-[72px] w-[72px]"
+          style={{ resizeMode: "contain" }}
+        />
       </View>
-      <Text style={styles.title}>Anchor. Act. Ascend.</Text>
-      <Text style={styles.subtitle}>
+      <Text className="mb-3 text-center text-3xl font-bold text-[#005E9E]">
+        Anchor. Act. Ascend.
+      </Text>
+      <Text className="mb-8 px-2 text-center text-base text-[#475569]">
         Your journey to leadership excellence starts here.
       </Text>
-      <View style={styles.buttonRow}>
+      <View className="flex-row">
         <TouchableOpacity
-          style={[styles.button, styles.primary]}
+          className="mr-3 rounded-full border-2 border-[#0F4C81] bg-[#0F4C81] px-6 py-3"
           onPress={() => router.push("/auth/signup")}
         >
-          <Text style={styles.primaryLabel}>Sign Up</Text>
+          <Text className="font-semibold text-white">Sign Up</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.button, styles.secondary]}
+          className="rounded-full border-2 border-[#0F4C81] bg-transparent px-6 py-3"
           onPress={() => router.push("/auth/login")}
         >
-          <Text style={styles.secondaryLabel}>Log In</Text>
+          <Text className="font-semibold text-[#0F4C81]">Log In</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 24,
-    backgroundColor: "#F8FAFC",
-  },
-  header: {
-    marginBottom: 24,
-  },
-  logo: {
-    width: 72,
-    height: 72,
-    resizeMode: "contain",
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "700",
-    color: "#005E9E",
-    textAlign: "center",
-    marginBottom: 12,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#475569",
-    textAlign: "center",
-    marginBottom: 32,
-  },
-  buttonRow: {
-    flexDirection: "row",
-    gap: 12,
-  },
-  button: {
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    borderRadius: 24,
-    borderWidth: 2,
-  },
-  primary: {
-    backgroundColor: "#0F4C81",
-    borderColor: "#0F4C81",
-  },
-  primaryLabel: {
-    color: "#FFFFFF",
-    fontWeight: "600",
-  },
-  secondary: {
-    backgroundColor: "transparent",
-    borderColor: "#0F4C81",
-  },
-  secondaryLabel: {
-    color: "#0F4C81",
-    fontWeight: "600",
-  },
-});

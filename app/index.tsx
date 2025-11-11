@@ -1,23 +1,23 @@
 import { icons } from "@/constants/icons";
+import { useCurrentUser } from "@/store/features/auth/authSlice";
+import { useAppSelector } from "@/store/hooks";
 import { useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import { useAuth } from "../contexts/auth";
 
  
 export default function Index() {
   const router = useRouter();
-  const { isAuthenticated } = useAuth();
-  console.log({isAuthenticated});
+  const currentUser = useAppSelector(useCurrentUser);
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (currentUser) {
       router.replace("/drawer/(tabs)/home");
     }
-  }, [isAuthenticated, router]);
+  }, [currentUser, router]);
 
-  if (isAuthenticated) {
+  if (currentUser) {
     return null;
   }
 
